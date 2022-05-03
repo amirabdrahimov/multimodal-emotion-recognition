@@ -5,9 +5,9 @@ mo --input_model your_ONNX_model -o output_directory_for_IR_model --data_type FP
 #### In our case we used the following commands:
 FP32:
 ```bash
-mo --input_model D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b0_8\enet_b0_8.onnx -o D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b2_8 --data_type FP32
+mo --input_model D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b0_8\enet_b0_8.onnx -o D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b0_8 --data_type FP32
 ```
 FP16:
 ```bash
-mo --input_model D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b0_8\enet_b0_8.onnx -o D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b2_8 --data_type FP16
+mo --input_model D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b0_8\enet_b0_8.onnx -o D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b0_8 --data_type FP16
 ```
