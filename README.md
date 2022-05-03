@@ -1,8 +1,8 @@
 <h1 align="center">Multimodal Emotion Recognition with OpenVINO™</h1>
 <h2 align="left">Model convertations</h2>
 <h4>To convert PyTorch model to ONNX format, use the code below:</h4>
-```bash
 
+```bash
 PATH = r'models\enet_b0_8\enet_b0_8.pt' # path to your model
 
 feature_extractor_model = torch.load(PATH) # load model
