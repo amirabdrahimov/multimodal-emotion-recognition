@@ -1,4 +1,4 @@
-<h1 align="center">Multimodal Emotion Recognition with OpenVINO™</h1>
+<h1 align="center">🎓Multimodal Emotion Recognition with OpenVINO™</h1>
 <h2 align="left">Model convertations</h2>
 <h4>To convert PyTorch model to ONNX format, use the code below:</h4>
 
@@ -28,9 +28,9 @@ mo --input_model D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zo
 ```
 <h2 align="left">Notes</h2>
 
-The models to evaluate and the code to run them were borrowed from this [repository](https://github.com/HSE-asavchenko/face-emotion-recognition) 
+The models to evaluate and the code to run them were borrowed from this [repository](https://github.com/HSE-asavchenko/face-emotion-recognition). 
 
-<br><br>Please be sure that EfficientNet models for PyTorch are based on old timm 0.4.5 package, so that exactly this version should be installed by the following command:
+Please be sure that EfficientNet models for PyTorch are based on old timm 0.4.5 package, so that exactly this version should be installed by the following command:
 
 ```
 pip install timm==0.4.5
