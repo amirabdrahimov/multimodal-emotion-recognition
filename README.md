@@ -1,5 +1,5 @@
-<h1 align="center">Emotion Recognition with OpenVINO™</h1>
-## Model convertations
+<h1 align="center">Multimodal Emotion Recognition with OpenVINO™</h1>
+<h2 align="center">Model convertations</h2>
 #### To convert PyTorch model to ONNX format, use the code below:
 ```bash
 # Path to your model
