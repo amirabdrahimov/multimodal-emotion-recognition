@@ -26,3 +26,9 @@ FP16:
 ```bash
 mo --input_model D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b0_8\enet_b0_8.onnx -o D:\Users\amira\openvino_env\Lib\site-packages\openvino\model_zoo\models\group_project\enet_b0_8 --data_type FP16
 ```
+#### Notes
+The models to evaluate and the code to run them were borrowed from this [repository](https://github.com/HSE-asavchenko/face-emotion-recognition)
+<br>Please be sure that EfficientNet models for PyTorch are based on old timm 0.4.5 package, so that exactly tis version should be installed by the following command:
+```
+pip install timm==0.4.5
+```
