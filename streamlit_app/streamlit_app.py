@@ -10,6 +10,7 @@ from tqdm import tqdm
 import pickle
 from pathlib import Path
 import librosa
+from scipy.special import softmax
 import subprocess
 from transformers import Wav2Vec2Processor
 
@@ -25,7 +26,7 @@ def save_file(video):
         f.write(video.getbuffer())
 
 
-def preprocess_function_eval(speech_path):
+def preprocess_function_eval(speech_path, processor, target_sampling_rate):
     speech_array, sampling_rate = librosa.load(speech_path, sr=16000)
     result = processor(speech_array, sampling_rate=target_sampling_rate, max_length=50000, padding=True,
                        truncation=True, return_attention_mask=True)
@@ -91,7 +92,7 @@ if col2.button(label='Запустить анализ') and uploaded_file is not
     cap.release()
     ie = Core()
     # path to xml file with model converted to OpenVino's IR format. bin file should be in the same directory
-    model = ie.read_model(model=curr_cwd / 'models'/'faces'/'enet_b0_8_FP16.xml')
+    model = ie.read_model(model=curr_cwd / 'models' / 'faces' / 'enet_b0_8_FP16.xml')
     # adding extra output layer
     model.add_outputs(['652'])
     feature_extractor = ie.compile_model(model=model, device_name="CPU")
@@ -187,11 +188,18 @@ if col2.button(label='Запустить анализ') and uploaded_file is not
     filename = 'linear_svc.sav'
     loaded_model = pickle.load(open(filename, 'rb'))
     y_pred = loaded_model.predict(x_test_norm)
-    y_logits_faces = loaded_model.decision_function(x_test_norm)
+    y_logits_faces = softmax(loaded_model.decision_function(x_test_norm))[0]
     # print(y_pred)
+    # print(type(y_logits_faces))
     class_to_idx = {'Angry': 0, 'Disgust': 1, 'Fear': 2, 'Happy': 3, 'Neutral': 4, 'Sad': 5, 'Surprise': 6}
     idx_to_class = {0: 'Angry', 1: 'Disgust', 2: 'Fear', 3: 'Happy', 4: 'Neutral', 5: 'Sad', 6: 'Surprise'}
+    proba_dict_faces = {}
+    for ind, logit in enumerate(y_logits_faces):
+        emotion = idx_to_class.get(ind)
+        proba = f'{round(100 * logit, 1)}%'
+        proba_dict_faces[emotion] = proba
 
+    st.write('Face model final result probabilities are: ', proba_dict_faces)
     st.write('Face model final result is: ', idx_to_class.get(y_pred[0]))
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -199,7 +207,6 @@ if col2.button(label='Запустить анализ') and uploaded_file is not
     pooling_mode = "mean"
     processor = Wav2Vec2Processor.from_pretrained(model_name_or_path)
     target_sampling_rate = processor.feature_extractor.sampling_rate
-
     if not Path.exists(audio_path):
         Path.mkdir(audio_path)
 
@@ -209,21 +216,30 @@ if col2.button(label='Запустить анализ') and uploaded_file is not
         f'ffmpeg -y -i {video_path} -f wav -ab 192000 -ar 16000 -vn {audio_path / Path("audio").with_suffix(".wav")}',
         shell=True, check=True)
     # time.sleep(5)
-    input_data = preprocess_function_eval(audio_path / 'audio.wav')
+    input_data = preprocess_function_eval(audio_path / 'audio.wav', processor, target_sampling_rate)
 
     ie = Core()
-    classification_model_xml = curr_cwd / 'models'/'audio'/'wav2vec2.xml'  # <- insert here xml file where folder contains .bin weight file
+    classification_model_xml = curr_cwd / 'models' / 'audio' / 'wav2vec2.xml'  # <- insert here xml file where folder contains .bin weight file
     model = ie.read_model(model=classification_model_xml)
     model.reshape([1, 50000])
     compiled_model = ie.compile_model(model=model, device_name="CPU")
     input_layer = compiled_model.input(0)
     output_layer = compiled_model.output(0)
 
-    result_audio = compiled_model([np.expand_dims(input_data, 0)])[output_layer]
-    st.write('Audio model final result is: ', idx_to_class.get(int(np.argmax(result_audio))))
-    summed_logits = np.add(y_logits_faces, result_audio)
-    emotion = np.argmax(summed_logits)
+    result_audio = softmax(compiled_model([np.expand_dims(input_data, 0)])[output_layer])
+    list_result_audio = result_audio[0].tolist()
+    proba_dict_audio = {}
+    for ind, logit in enumerate(list_result_audio):
+        emotion = idx_to_class.get(ind)
+        # print(type(logit))
+        proba = f'{round(100 * logit, 1)}%'
+        proba_dict_audio[emotion] = proba
 
-    st.write('Ensemble final result is: ', idx_to_class.get(int(emotion)))
+    st.write('Audio model final result probabilities are: ', proba_dict_audio)
+    st.write('Audio model final result is: ', idx_to_class.get(int(np.argmax(result_audio))))
+# ------------------------------------------------------------------------------------------------------
+    summed_logits = np.add(y_logits_faces, result_audio)
+    fin_emotion = np.argmax(summed_logits)
+    st.write('Ensemble final result is: ', idx_to_class.get(int(fin_emotion)))
 #
 #     y_pred
