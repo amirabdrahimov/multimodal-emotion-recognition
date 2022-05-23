@@ -50,4 +50,4 @@ pip install timm==0.4.5
 
 <h2 align="left">Demo</h2>
 
-[![Demo](demo.gif)]
+![Demo](demo.gif)
