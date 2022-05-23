@@ -219,6 +219,16 @@ if col2.button(label='Запустить анализ') and uploaded_file is not
     input_data = preprocess_function_eval(audio_path / 'audio.wav', processor, target_sampling_rate)
 
     ie = Core()
+
+    if not Path(curr_cwd/'models'/'audio'/'wav2vec2.bin').exists():
+        import gdown
+        print('downloading')
+        # os.system(f"curl -L -o {Path(curr_cwd/'models'/'audio'/'wav2vec2.bin')} -C - 'https://doc-08-8g-docs.googleusercontent.com/docs/securesc/acl6dg5mhtvma330938pjo9ut4paeedh/mlvqhrfcmmijsnk3rfikqtl8oqr91mca/1653328500000/12712638406216851641/12712638406216851641/1-DewHiTsSAzevKxbvzH5qLQBEh03mkOI?e=download&ax=ACxEAsZI7JNXadkCIlCuIwd6d8BMYZG2Y7NzHp2GaYaWLT4wWQ21hclpxsiQ5Ifz3IAoKZ1K0GSZYGjraqnpgaZFIktQ6MaPydNPZ2OZUObXxCW5lfYtb-JZtmCzjULtJZCiA5-_oG0WRDxExB4j67cbGjYP3RZPEn7cd_d2LMvsy_3hQJV9Vn6qaSQ27RyszMqvLlFMLTewizx_EbuZwucWB8ASV4RfEjHhV1mzs7tmxRntftnTDazGI0qc5gHL42p6d4FshMKGgBrTHXnAIuvMMdj0u34r2VQqkdUOLg_260lntdb8fuxolvY1R57jmp5AoVlyfoeEaf8MQB3dKI2X8R9ol2wj12vljKDNZgGujoX5zeNU039IIDO2lMzzKcezRbqOEb6MHkcxhVL8KhpdO5lthneEhNI53iDlDqXqTQFM-kw2r1XHbNOLS5DqzwhJ5t9mhCbui1mXr3WBwA98yVTxZTAJOoBGwAKIMPdT3TzVyU2do1JVfgWxSfOQ37Jw9EMTUtKIk1CJ1JdL5VYwMLZagvqww_i6o1XDIY3x73BtTEl2rapm6NC2i6D2K4eCzgU7xjEmLlUJRLGmWRCeOTWCbRrrbfp-Qo31wuT5nHxgk3qe_dgqrNM35eE9BxHU1eOddnz0N1XvrkjDEy17m5XQEJixj4uOcgDqq5FYvp4KPt14KVHh6Z_nRnKoyk0bzZnqAiNORbM&authuser=0&nonce=lk50p30cjtc0m&user=12712638406216851641&hash=s0nko7ji73vhmi6rh50b32uo3r1025b1'")
+        # time.sleep(20)
+        # os.system('gdown --id 1-DewHiTsSAzevKxbvzH5qLQBEh03mkOI')
+        output = curr_cwd/'models'/'audio'/'wav2vec2.bin'
+        gdown.download(id='1-DewHiTsSAzevKxbvzH5qLQBEh03mkOI', output=str(output))
+        # print('too fast?')
     classification_model_xml = curr_cwd / 'models' / 'audio' / 'wav2vec2.xml'  # <- insert here xml file where folder contains .bin weight file
     model = ie.read_model(model=classification_model_xml)
     model.reshape([1, 50000])
