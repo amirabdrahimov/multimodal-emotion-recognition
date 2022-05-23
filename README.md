@@ -46,3 +46,7 @@ Please be sure that EfficientNet models for PyTorch are based on old timm 0.4.5 
 ```
 pip install timm==0.4.5
 ```
+
+
+<h2 align="left">Demo</h2>
+![]https://github.com/Lev-etd/intel_course_project/blob/main/demo.gif
