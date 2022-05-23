@@ -49,4 +49,5 @@ pip install timm==0.4.5
 
 
 <h2 align="left">Demo</h2>
-[![Demo](demo.gif)]
+
+[![Demo Doccou alpha](demo.gif)](https://www.youtube.com/watch?v=ek1j272iAmc)
