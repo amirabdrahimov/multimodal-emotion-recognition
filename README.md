@@ -1,4 +1,8 @@
 <h1 align="center">🎓Multimodal Emotion Recognition with OpenVINO™</h1>
+<h2 align="left">Demo</h2>
+
+![Demo](demo.gif)
+
 <h2 align="left">Model convertation</h2>
 
 <div id='convert-and-optimize'/>
@@ -47,7 +51,3 @@ Please be sure that EfficientNet models for PyTorch are based on old timm 0.4.5 
 pip install timm==0.4.5
 ```
 
-
-<h2 align="left">Demo</h2>
-
-![Demo](demo.gif)
